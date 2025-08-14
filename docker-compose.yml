@@ -1,0 +1,22 @@
+services:
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+
+  php:
+    build: .
+    working_dir: /app
+    volumes:
+      - ./:/app
+    depends_on:
+      - mongo
+    environment:
+      MONGODB_URI: ${MONGODB_URI:-mongodb://mongo:27017}
+      MONGODB_DB: ${MONGODB_DB:-howto}
+    command: ["php", "/app/bin/run.php"]
+
+volumes:
+  mongodata:
