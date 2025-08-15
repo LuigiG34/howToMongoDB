@@ -14,10 +14,11 @@ class FileRepository
 
     public function __construct(Connection $conn)
     {
-        // GridFS bucket (default: two collections files.chunks + files.files)
+        // v2 signature: Bucket(Manager $manager, string $databaseName, array $options = [])
         $this->bucket = new Bucket(
             $conn->manager(),
-            ['bucketName' => 'files', 'database' => $conn->db()]
+            $conn->db(),
+            ['bucketName' => 'files']
         );
     }
 
